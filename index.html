@@ -1,961 +1,320 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>JABESS Runner </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Blandine 🎂</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;overflow:hidden;background:#050816;color:white;font-family:system-ui,sans-serif;touch-action:none}
-canvas{display:block}
-#hud{position:fixed;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;pointer-events:none;z-index:2}
-.pill{background:#101a30dd;border:1px solid #5eeaff66;border-radius:14px;padding:9px 13px;font-weight:800;box-shadow:0 0 18px #00d9ff18}
-#message{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;background:#03071699;z-index:3;padding:24px}
-.panel{max-width:350px;width:100%;background:#0c1634ee;border:1px solid #42e8ff88;border-radius:24px;padding:26px 20px;box-shadow:0 0 45px #00cfff22}
-h1{font-size:36px;line-height:1.05;margin:8px 0 12px;color:#62f4ff}
-p{color:#d0ddf8;line-height:1.5}
-button{border:0;border-radius:15px;background:#52edff;color:#031020;font-size:16px;font-weight:900;padding:14px 18px;cursor:pointer}
-#controls{position:fixed;bottom:20px;left:0;right:0;display:flex;justify-content:space-between;padding:0 20px;z-index:2}
-.group{display:flex;gap:12px}
-.ctrl{width:62px;height:62px;border-radius:20px;background:#101b35cc;border:1px solid #66eaff99;color:white;font-size:25px;touch-action:none}
-#jump{width:76px;background:#0e5168dd}
-.small{font-size:12px;color:#91a9ce}
-
-/* MILESTONE 4 — polished game interface */
-.game-panel {
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 22px;
-  background: rgba(4, 7, 24, 0.82);
-  backdrop-filter: blur(9px);
-  color: #fff;
-  font-family: Arial, sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.game-panel.hidden {
-  display: none;
-}
-
-.panel-card {
-  width: 100%;
-  max-width: 360px;
-  padding: 28px 22px;
+body {
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: white;
+  background: linear-gradient(135deg, #230b3b, #791b68, #e94e91);
   text-align: center;
-  border: 1px solid rgba(0, 230, 255, 0.55);
-  border-radius: 22px;
-  background: linear-gradient(
-    145deg,
-    rgba(20, 30, 65, 0.98),
-    rgba(8, 10, 30, 0.98)
-  );
-  box-shadow: 0 0 35px rgba(0, 220, 255, 0.15);
 }
 
-.panel-card h1 {
-  margin: 0 0 10px;
-  font-size: 32px;
-  color: #55edff;
-  text-shadow: 0 0 16px #00bfff;
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 18px;
+  position: relative;
+  z-index: 2;
 }
 
-.panel-card p {
-  color: #c3d4ef;
-  line-height: 1.6;
-}
-
-.game-button {
-  display: block;
+.card {
   width: 100%;
-  margin-top: 12px;
-  padding: 14px;
-  border: 0;
-  border-radius: 12px;
-  color: #06101d;
-  background: #50edff;
-  font-size: 16px;
+  max-width: 650px;
+  padding: 35px 22px;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 28px;
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 15px 50px rgba(0,0,0,.25);
+  animation: appear 1.2s ease;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(35px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tag {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 30px;
+  background: rgba(255,255,255,.17);
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+h1 {
+  font-size: clamp(35px, 8vw, 65px);
+  line-height: 1.15;
+  margin: 22px 0 12px;
+  text-shadow: 0 5px 25px rgba(255,100,190,.45);
+}
+
+.name {
+  color: #ffe49b;
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
+.subtitle {
+  font-size: 17px;
+  line-height: 1.8;
+  color: #ffeafa;
+}
+
+.cake {
+  font-size: 90px;
+  margin: 20px 0;
+  cursor: pointer;
+  display: inline-block;
+  animation: bounce 2s infinite;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,.2));
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+.message {
+  display: none;
+  text-align: left;
+  margin: 24px 0;
+  padding: 23px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.15);
+  line-height: 1.9;
+  animation: appear .8s ease;
+}
+
+.message h2 {
+  color: #ffe49b;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+button {
+  border: none;
+  border-radius: 50px;
+  padding: 15px 24px;
+  margin: 8px 4px;
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
 }
 
-.game-button.secondary {
-  color: #fff;
-  background: #28345b;
-  border: 1px solid #6175a8;
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,.2);
 }
 
-#pauseButton {
-  position: fixed;
-  z-index: 10;
-  top: 14px;
-  right: 14px;
-  padding: 10px 14px;
-  border: 1px solid #50edff;
-  border-radius: 10px;
-  background: rgba(8, 15, 40, 0.85);
-  color: #50edff;
-  font-weight: bold;
+.primary {
+  color: #6c174d;
+  background: linear-gradient(135deg, #fff1b8, #ffb9db);
 }
 
-#soundButton {
-  margin-top: 14px;
-  color: #d8eaff;
-  background: transparent;
-  border: 1px solid #50658d;
-  border-radius: 10px;
-  padding: 9px 14px;
+.secondary {
+  color: white;
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.4);
 }
 
-/* Milestone 4 feedback */
-#pauseButton {
-  display: none;
-}
-
-#feedback {
-  position: fixed;
-  z-index: 15;
-  top: 26%;
-  left: 50%;
-  transform: translate(-50%, 12px);
-  color: #ffe36a;
-  font-weight: 900;
-  font-size: 24px;
-  text-shadow: 0 0 16px #ffb900;
-  pointer-events: none;
-  opacity: 0;
-}
-
-#feedback.pop {
-  animation: coinPop 650ms ease-out;
-}
-
-@keyframes coinPop {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 18px) scale(.7);
-  }
-  35% {
-    opacity: 1;
-    transform: translate(-50%, 0) scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -22px) scale(1);
-  }
-}
-  
-
-/* Milestone 5 — mobile layout */
-#hud {
-  gap: 5px;
-  flex-wrap: wrap;
-}
-
-.pill {
-  padding: 7px 9px;
+footer {
+  margin-top: 28px;
+  color: #ffe4f4;
   font-size: 13px;
 }
 
-#controls {
-  padding-left: 14px;
-  padding-right: 14px;
-  bottom: max(16px, env(safe-area-inset-bottom));
+.heart {
+  position: fixed;
+  bottom: -30px;
+  pointer-events: none;
+  z-index: 1;
+  animation: floatUp linear forwards;
 }
 
-.ctrl {
-  width: 56px;
-  height: 56px;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-}
-
-#jump {
-  width: 70px;
-}
-
-@media (max-width: 380px) {
-  #hud {
-    top: 8px;
-    left: 8px;
-    right: 8px;
-  }
-
-  .pill {
-    padding: 6px 7px;
-    font-size: 11px;
-  }
-
-  #controls {
-    padding: 0 10px;
-  }
-
-  .group {
-    gap: 8px;
-  }
-
-  .ctrl {
-    width: 50px;
-    height: 54px;
+@keyframes floatUp {
+  to {
+    transform: translateY(-115vh) rotate(360deg);
+    opacity: 0;
   }
 }
 
+.confetti {
+  position: fixed;
+  top: -15px;
+  z-index: 5;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(800deg);
+    opacity: .8;
+  }
+}
+
+#toast {
+  margin-top: 14px;
+  color: #ffe49b;
+  min-height: 24px;
+}
+
+@media (max-width: 480px) {
+  .card { padding: 28px 17px; }
+  .subtitle { font-size: 15px; }
+  .cake { font-size: 75px; }
+}
 </style>
 </head>
+
 <body>
-<div id="hud">
-  <div class="pill">🏆 <span id="score">0</span></div>
-  <div class="pill">🪙 <span id="coins">0</span></div>
-  <div class="pill">⭐ <span id="best">0</span></div>
-  <div class="pill">⚡ <span id="speed">1.0</span>x</div>
+
+<div class="container">
+  <main class="card">
+
+    <div class="tag">✨ A SPECIAL DAY ✨</div>
+
+    <h1>
+      Happy Birthday<br>
+      <span class="name">Blandine!</span>
+    </h1>
+
+    <p class="subtitle">
+      To my wonderful sister,<br>
+      today the world celebrates someone truly special. 💖
+    </p>
+
+    <div class="cake" onclick="celebrate()" title="Tap the cake!">
+      🎂
+    </div>
+
+    <p class="subtitle">
+      May your day be filled with love, laughter,<br>
+      beautiful memories and endless happiness.
+    </p>
+
+    <div>
+      <button class="primary" onclick="openMessage()">
+        💌 Open Your Surprise
+      </button>
+
+      <button class="secondary" onclick="celebrate()">
+        🎉 Celebrate!
+      </button>
+    </div>
+
+    <div class="message" id="message">
+      <h2>Dear Blandine 💕</h2>
+
+      <p>
+        Happy birthday to my amazing sister!
+        Today is a reminder of how blessed I am to have you
+        in my life. You are more than a sister; you are a
+        precious part of my world.
+      </p>
+
+      <p>
+        May God bless you with good health, peace, wisdom,
+        success, and countless reasons to smile. May every
+        dream in your heart bring you closer to a beautiful
+        future.
+      </p>
+
+      <p>
+        No matter how much we grow, you will always have a
+        special place in my heart. Keep shining, keep smiling,
+        and never forget how loved you are.
+      </p>
+
+      <p style="text-align:center; margin-top:18px;">
+        <strong>Love you always, my sister! ❤️🎂</strong>
+      </p>
+    </div>
+
+    <div id="toast"></div>
+
+    <footer>
+      Made with ❤️ especially for Blandine<br>
+      🎈 May all your wishes come true! 🎈
+    </footer>
+
+  </main>
 </div>
 
-<div id="message">
-  <div class="panel">
-    <div style="font-size:44px">🏃‍♂️</div>
-    <h1>JABESS RUNNER</h1>
-    <p>A 3D endless runner. Switch lanes, jump over barriers and collect coins!</p>
-    <button id="start">START RUN ▶</button>
-    <p class="small">Touch the controls or swipe the screen.</p>
-  </div>
-</div>
+<script>
+function openMessage() {
+  const message = document.getElementById("message");
 
-<div id="controls">
-  <div class="group">
-    <button class="ctrl" id="left" aria-label="Move left">◀</button>
-    <button class="ctrl" id="right" aria-label="Move right">▶</button>
-  </div>
-  <button class="ctrl" id="jump" aria-label="Jump">⬆</button>
-</div>
-
-<!-- Start screen -->
-<div id="startPanel" class="game-panel">
-  <div class="panel-card">
-    <h1>JABESS RUNNER</h1>
-    <p>Run through the neon city.<br>
-       Dodge obstacles. Collect coins. Beat your record.</p>
-    <button id="startButton" class="game-button">
-      ▶ START RUN
-    </button>
-    <button id="soundButton">🔊 Sound: ON</button>
-  </div>
-</div>
-
-<!-- Pause screen -->
-<div id="pausePanel" class="game-panel hidden">
-  <div class="panel-card">
-    <h1>PAUSED</h1>
-    <p>Take a breath. Your next run awaits.</p>
-    <button id="resumeButton" class="game-button">
-      ▶ RESUME
-    </button>
-    <button id="pauseRestartButton"
-            class="game-button secondary">
-      ↻ RESTART RUN
-    </button>
-  </div>
-</div>
-
-<!-- Game over screen -->
-<div id="gameOverPanel" class="game-panel hidden">
-  <div class="panel-card">
-    <h1>RUN OVER</h1>
-    <p>Your score</p>
-    <h2 id="finalScore">0</h2>
-    <p>Best score</p>
-    <h2 id="finalBest">0</h2>
-    <button id="restartButton" class="game-button">
-      ↻ RUN AGAIN
-    </button>
-  </div>
-</div>
-
-<button id="pauseButton">Ⅱ PAUSE</button>
-<div id="feedback" aria-live="polite"></div>
-
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.185.0/build/three.module.js';
-
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x050816);
-scene.fog = new THREE.Fog(0x050816, 24, 100);
-
-const camera = new THREE.PerspectiveCamera(
-  65, innerWidth / innerHeight, 0.1, 140
-);
-camera.position.set(0, 5.2, 10);
-camera.lookAt(0, 1, -4);
-
-const renderer = new THREE.WebGLRenderer({antialias:false, powerPreference:'low-power'});
-// Mobile performance optimization
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
-renderer.setSize(innerWidth, innerHeight);
-renderer.shadowMap.enabled = false;
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-document.body.prepend(renderer.domElement);
-
-scene.add(new THREE.HemisphereLight(0x9edbff, 0x17102e, 2));
-
-const light = new THREE.DirectionalLight(0xffffff, 2.3);
-light.position.set(-4, 10, 6);
-scene.add(light);
-
- // Lightweight starfield
-const starCount = 280;
-const starPositions = new Float32Array(starCount * 3);
-
-for (let i = 0; i < starCount; i++) {
-  starPositions[i * 3] = (Math.random() - .5) * 100;
-  starPositions[i * 3 + 1] = 5 + Math.random() * 35;
-  starPositions[i * 3 + 2] = -Math.random() * 100;
-}
-
-const starGeometry = new THREE.BufferGeometry();
-starGeometry.setAttribute(
-  'position',
-  new THREE.BufferAttribute(starPositions, 3)
-);
-
-const starMaterial = new THREE.PointsMaterial({
-  color: 0x9ceeff,
-  size: .16,
-  sizeAttenuation: true
-});
-
-const stars = new THREE.Points(starGeometry, starMaterial);
-scene.add(stars);
-
-
-const mat = (color, emissive=0x000000) =>
-  new THREE.MeshStandardMaterial({color, emissive});
-
-const groundMat = mat(0x111a31);
-const roadMat = mat(0x1a2340);
-const cyanMat = mat(0x32eaff, 0x087d99);
-const playerMat = mat(0xff4eaa, 0x620d40);
-const obstacleMat = mat(0xff4c61, 0x6c0819);
-const coinMat = new THREE.MeshStandardMaterial({
-  color:0xffd34e, emissive:0x9a5700, metalness:0.65, roughness:0.28
-});
-
-const floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), groundMat);
-floor.rotation.x = -Math.PI / 2;
-floor.position.y = -0.12;
-scene.add(floor);
-
-const road = new THREE.Mesh(new THREE.BoxGeometry(8.5, .15, 150), roadMat);
-road.position.set(0, -.04, -48);
-scene.add(road);
-
-// Road edges and lane markings
-const lines = [];
-for (const x of [-4.15, -1.4, 1.4, 4.15]) {
-  const edge = new THREE.Mesh(
-    new THREE.BoxGeometry(.045, .025, 150), cyanMat
-  );
-  edge.position.set(x, .06, -48);
-  scene.add(edge);
-}
-for (const x of [-1.4, 1.4]) {
-  for (let i=0; i<18; i++) {
-    const line = new THREE.Mesh(
-      new THREE.BoxGeometry(.025, .025, 2.0), cyanMat
-    );
-    line.position.set(x, .065, -i*8);
-    scene.add(line);
-    lines.push(line);
-  }
-}
-
-// Neon buildings along the road
-const buildings = [];
-const buildingMaterials = [0x17284b, 0x202044, 0x102d42, 0x302044];
-for(let side of [-1,1]){
-  for(let i=0;i<24;i++){
-    const h=2+Math.random()*9;
-    const w=1+Math.random()*2.5;
-    const mesh=new THREE.Mesh(
-      new THREE.BoxGeometry(w,h,w),
-      mat(buildingMaterials[Math.floor(Math.random()*buildingMaterials.length)])
-    );
-    mesh.position.set(side*(6+Math.random()*5),h/2-0.1,-i*7-5);
-    scene.add(mesh);
-    buildings.push(mesh);
-  }
-}
-
-// Player: a simple 3D character made from shapes
-
- // PLAYER V2 — detailed low-poly runner
-const player = new THREE.Group();
-
-const armorMat = new THREE.MeshStandardMaterial({
-  color: 0x222d55,
-  emissive: 0x101c55,
-  metalness: 0.45,
-  roughness: 0.38
-});
-
-const pinkMat = new THREE.MeshStandardMaterial({
-  color: 0xff399d,
-  emissive: 0x8a104c,
-  metalness: 0.25,
-  roughness: 0.35
-});
-
-const skinMat = mat(0xffc6a5);
-const shoeMat = mat(0x11172c);
-const jointMat = mat(0x4a5fff, 0x1924a8);
-
-// Helper for creating a mesh at a position
-function makePart(parent, geometry, material, x, y, z) {
-  const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.set(x, y, z);
-  parent.add(mesh);
-  return mesh;
-}
-
-// Torso and chest armor
-const body = new THREE.Group();
-body.position.y = 1.08;
-player.add(body);
-
-makePart(
-  body, new THREE.BoxGeometry(.66, .76, .38),
-  armorMat, 0, 0, 0
-);
-
-makePart(
-  body, new THREE.BoxGeometry(.48, .25, .405),
-  pinkMat, 0, .12, -.015
-);
-
-// Shoulder details
-for (const x of [-.39, .39]) {
-  makePart(
-    body, new THREE.SphereGeometry(.17, 8, 6),
-    pinkMat, x, .23, 0
-  );
-}
-
-// Head and glowing visor
-const head = new THREE.Group();
-head.position.set(0, .57, 0);
-body.add(head);
-
-makePart(
-  head, new THREE.SphereGeometry(.27, 10, 8),
-  skinMat, 0, 0, 0
-);
-
-makePart(
-  head, new THREE.BoxGeometry(.43, .13, .12),
-  cyanMat, 0, .025, -.235
-);
-
-// Small backpack
-makePart(
-  body, new THREE.BoxGeometry(.35, .46, .17),
-  pinkMat, 0, -.08, .25
-);
-
-// Arms rotate around their shoulder pivots
-const arms = [];
-
-for (const side of [-1, 1]) {
-  const arm = new THREE.Group();
-  arm.position.set(side * .43, .23, 0);
-  body.add(arm);
-
-  makePart(
-    arm, new THREE.BoxGeometry(.19, .43, .2),
-    armorMat, 0, -.19, 0
-  );
-
-  makePart(
-    arm, new THREE.BoxGeometry(.2, .13, .21),
-    jointMat, 0, -.4, -.015
-  );
-
-  makePart(
-    arm, new THREE.BoxGeometry(.18, .16, .18),
-    pinkMat, 0, -.51, 0
-  );
-
-  arms.push(arm);
-}
-
-// Legs, knee joints and shoes
-const legs = [];
-const shoes = [];
-
-for (const x of [-.21, .21]) {
-  const leg = new THREE.Group();
-  leg.position.set(x, .66, 0);
-  player.add(leg);
-
-  makePart(
-    leg, new THREE.BoxGeometry(.23, .48, .25),
-    jointMat, 0, -.2, 0
-  );
-
-  makePart(
-    leg, new THREE.BoxGeometry(.25, .13, .27),
-    pinkMat, 0, -.34, 0
-  );
-
-  const shoe = makePart(
-    leg, new THREE.BoxGeometry(.25, .14, .4),
-    shoeMat, 0, -.4, -.07
-  );
-
-  shoes.push(shoe);
-  legs.push(leg);
-}
-
-player.position.set(0, 0, 3);
-scene.add(player);
-
-
-// Reusable obstacles and coins
-const obstacles=[];
-const collectibles=[];
-
-
-function addObstacle(lane, z) {
-  const type = Math.random();
-
-  let mesh;
-
-  if (type < 0.55) {
-    // Standard block
-    mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(1.25, 1.25, 0.9),
-      obstacleMat
-    );
-    mesh.position.y = 0.625;
-
-  } else if (type < 0.8) {
-    // Wide, low barrier: jump over it
-    mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(2.0, 0.55, 0.7),
-      mat(0xff9c42, 0x803000)
-    );
-    mesh.position.y = 0.275;
-
+  if (message.style.display === "block") {
+    message.style.display = "none";
   } else {
-    // Tall neon pillar
-    mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(0.75, 2.1, 0.75),
-      mat(0xb66bff, 0x5310aa)
-    );
-    mesh.position.y = 1.05;
+    message.style.display = "block";
+    celebrate();
+    message.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
   }
-
-  mesh.position.x = lane * 2.8;
-  mesh.position.z = z;
-
-  scene.add(mesh);
-  obstacles.push(mesh);
 }
 
+function celebrate() {
+  const toast = document.getElementById("toast");
+  toast.textContent = "🎉 You deserve all the happiness in the world! 💖";
 
-function addCoin(lane,z){
-  const mesh=new THREE.Mesh(
-    new THREE.TorusGeometry(.35,.12,8,16),coinMat
-  );
-  mesh.position.set(lane*2.8,1.2,z);
-  scene.add(mesh);
-  collectibles.push(mesh);
-}
+  const symbols = ["💖", "💕", "✨", "💗", "🌸", "🎊", "💝"];
 
-let lane=0, targetX=0, jumpY=0, jumpV=0;
-let running = false;
-let paused = false;
-let score = 0;
-let coinCount = 0;
-let elapsed = 0;
-let speed=15, spawnTimer=0, coinTimer=0, lastTime=0;
-let obstacleSpawnCount=0;
-const scoreEl=document.querySelector('#score');
-const coinsEl=document.querySelector('#coins');
-const speedEl=document.querySelector('#speed');
-const bestEl = document.querySelector('#best');
+  for (let i = 0; i < 45; i++) {
+    const piece = document.createElement("div");
+    piece.className = "confetti";
+    piece.textContent = symbols[
+      Math.floor(Math.random() * symbols.length)
+    ];
 
-let bestScore = 0;
+    piece.style.left = Math.random() * 100 + "vw";
+    piece.style.fontSize = (12 + Math.random() * 18) + "px";
+    piece.style.animationDuration = (2 + Math.random() * 3) + "s";
 
-try {
-  bestScore = Number(localStorage.getItem('neonRunnerBest')) || 0;
-} catch (e) {
-  bestScore = 0;
-}
+    document.body.appendChild(piece);
 
-bestEl.textContent = bestScore;
-const message=document.querySelector('#message');
-const startBtn=document.querySelector('#start');
-
-function updateHUD(){
-  scoreEl.textContent=Math.floor(score);
-  coinsEl.textContent=coinCount;
-  speedEl.textContent=(speed/15).toFixed(1);
-}
-
-
-function beginGame() {
-  obstacles.forEach(o => scene.remove(o));
-  collectibles.forEach(c => scene.remove(c));
-
-  obstacles.length = 0;
-  collectibles.length = 0;
-
-  lane = 0;
-  targetX = 0;
-  jumpY = 0;
-  jumpV = 0;
-
-  score = 0;
-  coinCount = 0;
-  elapsed = 0;
-
-  speed = 15;
-  spawnTimer = 0.6;
-  coinTimer = 1;
-  obstacleSpawnCount = 0;
-
-  player.position.set(0, 0, 3);
-  player.rotation.set(0, 0, 0);
-  body.position.y = 1.08;
-  body.rotation.set(0, 0, 0);
-
-  running = true;
-  paused = false;
-
-  message.style.display = 'none';
-  document.querySelector('#startPanel').classList.add('hidden');
-  document.querySelector('#pausePanel').classList.add('hidden');
-  document.querySelector('#gameOverPanel').classList.add('hidden');
-
-  document.querySelector('#pauseButton').style.display = 'block';
-
-  updateHUD();
-}
-
-
-
-function endGame() {
-  if (!running) return;
-
-  running = false;
-  paused = false;
-
-  const finalScoreValue = Math.floor(score);
-
-  if (finalScoreValue > bestScore) {
-    bestScore = finalScoreValue;
-
-    try {
-      localStorage.setItem('neonRunnerBest', bestScore);
-    } catch (error) {
-      console.warn('Best score could not be saved:', error);
-    }
+    setTimeout(() => piece.remove(), 5500);
   }
-
-  bestEl.textContent = bestScore;
-  document.querySelector('#finalScore').textContent = finalScoreValue;
-  document.querySelector('#finalBest').textContent = bestScore;
-
-  document.querySelector('#pauseButton').style.display = 'none';
-  document.querySelector('#pausePanel').classList.add('hidden');
-  document.querySelector('#startPanel').classList.add('hidden');
-  document.querySelector('#gameOverPanel').classList.remove('hidden');
-
-  playSound(160, 0.28, 'sawtooth');
 }
 
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.textContent = ["💗", "💕", "♡", "✨"][
+    Math.floor(Math.random() * 4)
+  ];
 
-function moveLane(dir){
-  if (!running || paused) return;
-  lane=Math.max(-1,Math.min(1,lane+dir));
-  targetX=lane*2.8;
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (14 + Math.random() * 22) + "px";
+  heart.style.animationDuration = (5 + Math.random() * 6) + "s";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 11000);
 }
 
-
-function jump() {
-  if (!running || paused || jumpY > 0.02) return;
-
-  jumpV = 9.2;
-  playSound(440, 0.09, 'triangle');
-}
-
-
-document.querySelector('#left').addEventListener('pointerdown',e=>{
-  e.preventDefault();moveLane(-1);
-});
-document.querySelector('#right').addEventListener('pointerdown',e=>{
-  e.preventDefault();moveLane(1);
-});
-document.querySelector('#jump').addEventListener('pointerdown',e=>{
-  e.preventDefault();jump();
-});
-startBtn.addEventListener('click',beginGame);
-
-addEventListener('keydown',e=>{
-  if(e.key==='ArrowLeft'||e.key==='a')moveLane(-1);
-  if(e.key==='ArrowRight'||e.key==='d')moveLane(1);
-  if(e.key==='ArrowUp'||e.key===' '||e.key==='w')jump();
-  if(e.key==='Enter'&&!running)beginGame();
-});
-
-let touchX=0,touchY=0;
-renderer.domElement.addEventListener('pointerdown',e=>{
-  touchX=e.clientX;touchY=e.clientY;
-});
-renderer.domElement.addEventListener('pointerup',e=>{
-  if(!running)return;
-  const dx=e.clientX-touchX,dy=e.clientY-touchY;
-  if(Math.abs(dx)>35&&Math.abs(dx)>Math.abs(dy))
-    moveLane(dx>0?1:-1);
-  else if(dy < -35)jump();
-});
-
-const clock=new THREE.Clock();
-
-function animate(){
-  requestAnimationFrame(animate);
-  const dt=Math.min(clock.getDelta(),.04);
-
-  // Keep the world animated even on the start screen
-  for(const b of buildings){
-    b.position.z += running && !paused ? speed * dt : 0;
-    if(b.position.z>12)b.position.z-=168;
-  }
-
-  for(const l of lines){
-    l.position.z += running && !paused ? speed * dt : 0;
-    if(l.position.z>8)l.position.z-=144;
-  }
-
-  if (running && !paused) {
-    elapsed+=dt;
-    speed=Math.min(29,15+elapsed*.24);
-    score+=dt*speed*.65;
-    spawnTimer-=dt;
-    coinTimer-=dt;
-
-    if(spawnTimer<=0){
-      const chosen=Math.floor(Math.random()*3)-1;
-      addObstacle(chosen,-75);
-      obstacleSpawnCount++;
-      spawnTimer=Math.max(.65,1.25-elapsed*.004)+Math.random()*.35;
-
-      // Sometimes place a coin trail in a different lane
-      if(obstacleSpawnCount%3===0){
-        const coinLane=[-1,0,1].filter(v=>v!==chosen);
-        const free=coinLane[Math.floor(Math.random()*coinLane.length)];
-        for(let i=0;i<4;i++)addCoin(free,-49-i*2.2);
-      }
-    }
-
-    if(coinTimer<=0){
-      const clane=Math.floor(Math.random()*3)-1;
-      addCoin(clane,-75);
-      coinTimer=1.7+Math.random()*1.2;
-    }
-
-    player.position.x+=(targetX-player.position.x)*Math.min(1,dt*12);
-    jumpV-=23*dt;
-    jumpY+=jumpV*dt;
-    if(jumpY<0){jumpY=0;jumpV=0;}
-    player.position.y=jumpY;
-
-    
-   // Running animation V2
-   const runCycle = Math.sin(elapsed * 13);
-
-   legs[0].rotation.x = runCycle * .65;
-   legs[1].rotation.x = -runCycle * .65;
-
-   // Arms swing opposite to the legs
-   arms[0].rotation.x = -runCycle * .55;
-   arms[1].rotation.x = runCycle * .55;
-
-   // Lean gently into lane changes
-   body.rotation.z =
-     THREE.MathUtils.clamp(
-       (targetX - player.position.x) * -.12,
-       -.25,
-       .25
-     );
-
-   // Slight torso bounce while running
-   body.position.y = 1.08 + Math.abs(runCycle) * .035;
-
-   // Lean forward a little while moving
-   body.rotation.x = -.06;
-
-
-    camera.position.x+=(player.position.x*.22-camera.position.x)*dt*2;
-    camera.lookAt(player.position.x*.15,1.0,-4);
-
-    for(let i=obstacles.length-1;i>=0;i--){
-      const o=obstacles[i];
-      o.position.z+=speed*dt;
-      o.rotation.y+=dt*.5;
-
-      const near=Math.abs(o.position.z-player.position.z)<.85;
-      const sameLane=Math.abs(o.position.x-player.position.x)<1.25;
-      const notJumping=jumpY<.9;
-
-      if(near&&sameLane&&notJumping){
-        endGame();
-        break;
-      }
-      if(o.position.z>10){
-        scene.remove(o);obstacles.splice(i,1);
-      }
-    }
-
-    if(running){
-      for(let i=collectibles.length-1;i>=0;i--){
-        const c=collectibles[i];
-        c.position.z+=speed*dt;
-        c.rotation.y+=dt*3;
-        c.rotation.x+=dt*1.2;
-
-        const near=Math.abs(c.position.z-player.position.z)<1.0;
-        const sameLane=Math.abs(c.position.x-player.position.x)<1.25;
-        if(near&&sameLane&&Math.abs(c.position.y-(1.2+jumpY))<1.7){
-          coinCount++;
-          score += 25;
-
-          playSound(880, 0.08, 'sine');
-          showFeedback('+25  🪙');
-
-          scene.remove(c);
-          collectibles.splice(i, 1);
-        }else if(c.position.z>10){
-          scene.remove(c);collectibles.splice(i,1);
-        }
-      }
-    }
-    updateHUD();
-  }
-
-  renderer.render(scene,camera);
-}
-animate();
-
-/* MILESTONE 4 — lightweight sound effects */
-let soundEnabled = true;
-let audioContext = null;
-
-function playSound(frequency = 600, duration = 0.09, type = "sine") {
-  if (!soundEnabled) return;
-
-  try {
-    audioContext ??= new (
-      window.AudioContext || window.webkitAudioContext
-    )();
-
-    if (audioContext.state === "suspended") {
-      audioContext.resume();
-    }
-
-    const oscillator = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-
-    oscillator.type = type;
-    oscillator.frequency.setValueAtTime(
-      frequency,
-      audioContext.currentTime
-    );
-
-    gain.gain.setValueAtTime(
-      0.12,
-      audioContext.currentTime
-    );
-    gain.gain.exponentialRampToValueAtTime(
-      0.001,
-      audioContext.currentTime + duration
-    );
-
-    oscillator.connect(gain);
-    gain.connect(audioContext.destination);
-
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + duration);
-  } catch (error) {
-    console.warn("Sound unavailable:", error);
-  }
-  
-}
-
-/* Milestone 4 — screen controls */
-
-document.querySelector('#startButton')
-  .addEventListener('click', beginGame);
-
-document.querySelector('#restartButton')
-  .addEventListener('click', beginGame);
-
-document.querySelector('#pauseRestartButton')
-  .addEventListener('click', beginGame);
-
-document.querySelector('#pauseButton')
-  .addEventListener('click', () => {
-    if (!running || paused) return;
-
-    paused = true;
-    document.querySelector('#pausePanel').classList.remove('hidden');
-  });
-
-document.querySelector('#resumeButton')
-  .addEventListener('click', () => {
-    if (!running || !paused) return;
-
-    paused = false;
-    document.querySelector('#pausePanel').classList.add('hidden');
-  });
-
-function showFeedback(text) {
-  const feedback = document.querySelector('#feedback');
-
-  feedback.textContent = text;
-  feedback.classList.remove('pop');
-
-  // Restart the CSS animation.
-  void feedback.offsetWidth;
-
-  feedback.classList.add('pop');
-}
-
-document.querySelector("#soundButton").addEventListener("click", () => {
-  soundEnabled = !soundEnabled;
-
-  document.querySelector("#soundButton").textContent =
-    soundEnabled ? "🔊 Sound: ON" : "🔇 Sound: OFF";
-
-  if (soundEnabled) playSound(700);
-});
-
-
-addEventListener('resize',()=>{
-  camera.aspect=innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth,innerHeight);
-});
-
-
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden && running && !paused) {
-    paused = true;
-    document.querySelector('#pausePanel').classList.remove('hidden');
-  }
-});
-
+setInterval(createHeart, 650);
 </script>
+
 </body>
 </html>
